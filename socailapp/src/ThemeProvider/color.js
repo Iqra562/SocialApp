@@ -1,10 +1,13 @@
-const colors ={
+
+const  colors ={
     light:{
-     primary:"#0000000d",
+        primary:"#52307c",
+        secondary:"#0000000d",
      text:"#0f0f0f",
      icon:"#030303",
      border:"#0000001a",
-     background:"#ffffff"
+     background:"#ffffff",
+     lightPurple:"#dcd5e5"
     },
     dark:{
         primary:"",
@@ -14,3 +17,5 @@ const colors ={
         background:"#0f0f0f"
     }
 }
+
+export default colors;
