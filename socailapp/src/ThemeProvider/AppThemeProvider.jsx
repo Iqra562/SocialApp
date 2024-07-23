@@ -1,13 +1,14 @@
 import { createTheme } from "@mui/material";
 import colors from "./color";
-import { deepPurple, purple, red } from "@mui/material/colors";
+import { deepPurple, green, purple, red } from "@mui/material/colors";
 export const theme  = createTheme({
     palette:{
       mode:'light'  ,
       primary:{
         main:colors.light.primary,
-        dark:purple[900],
-        light:"yellow"
+        dark:colors.light.hover,
+        // light:"yellow",
+        contrastText:"white"
       },
       secondary:{
         main:red[200]
@@ -34,10 +35,13 @@ export const theme  = createTheme({
           },
         },
       },
-      MuiButtonBase:{
+      MuiButton:{
 defaultProps:{
   disableRipple:true,
+disableFocusRipple:true,
   disableTouchRipple:true,
+  disableElevation:true
+
 }
       }
     },
