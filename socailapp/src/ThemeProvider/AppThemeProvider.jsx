@@ -11,10 +11,20 @@ export const theme  = createTheme({
         contrastText:"white"
       },
       secondary:{
-        main:red[200]
+        main:colors.light.background
       }
     },
     components: {
+      MuiAppBar:{
+        styleOverrides:{
+          root:{
+            backgroundColor:"#fff",
+            color:"#000",
+            boxShadow:"none",
+            borderBottom:`1px solid ${colors.light.border}`
+          }
+        }
+      },
       MuiTextField: {
         styleOverrides: {
           root: {

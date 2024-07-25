@@ -1,13 +1,18 @@
 import { Box, Button, Container, Link, TextField, Typography } from "@mui/material";
-import React from "react";
-import EmbeddedVideo from "../components/EmbeddedVideo/EmbeddedVideo";
-import colors from "../ThemeProvider/color";
+import React, { useEffect, useState } from "react";
+import EmbeddedVideo from "../../components/EmbeddedVideo/EmbeddedVideo";
+import colors from "../../ThemeProvider/color";
 import { FcGoogle } from "react-icons/fc";
 
 function Login() {
+    const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   return (
     <Box sx={{ display: "flex" }}>
-      <Box sx={{ flexBasis: "30%" }}>
+      <Box sx={{ flexBasis:isMounted ? "30%" :"40%",transition:"flex-basis 1s ease" }}>
         <EmbeddedVideo />
       </Box>
       <Box sx={{ flex: 1, padding: "6%" }}>

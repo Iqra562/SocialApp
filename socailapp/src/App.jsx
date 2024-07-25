@@ -1,16 +1,21 @@
 import './App.css'
-import {  ThemeProvider, } from '@mui/material'
+import {  AppBar, ThemeProvider, } from '@mui/material'
 import { theme } from './ThemeProvider/AppThemeProvider'
-import SignUp from './pages/SignUp'
-import Login from './pages/Login'
+import SignUp from './pages/Client/SignUp'
+import Login from './pages/Client/Login'
+import PrimarySearchAppBar from './pages/Client/Appbar/Appbar'
+import MiniDrawer from './pages/Client/Sidebar/Sidebar'
 function App() {
 
-  return (
+  return ( 
     <>
     <ThemeProvider theme={theme}>
          {/* <SignUp/> */}
-         <Login/>
+         {/* <Login/> */}
+<MiniDrawer/>
+   {/* <PrimarySearchAppBar/> */}
     </ThemeProvider>
+
     </>
   )
 }
