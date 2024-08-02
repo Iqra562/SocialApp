@@ -1,23 +1,35 @@
-import './App.css'
-import {  AppBar, ThemeProvider, } from '@mui/material'
-import { theme } from './ThemeProvider/AppThemeProvider'
-import SignUp from './pages/Client/SignUp'
-import Login from './pages/Client/Login'
-import PrimarySearchAppBar from './pages/Client/Appbar/Appbar'
-import MiniDrawer from './pages/Client/Sidebar/Sidebar'
+import './App.css';
+import { ThemeProvider } from '@mui/material';
+import { theme } from './ThemeProvider/AppThemeProvider';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ClientLayout from './Layouts/ClientLayout/ClientLayout.jsx';
+import Home from './pages/Client/Home/Home';
+import SignUp from './pages/Client/SignUp';
+import Login from './pages/Client/Login';  // Import your SignIn component
+
 function App() {
+  const authenticated = false;  // Example: Change this based on your authentication logic
 
-  return ( 
-    <>
+  return (
     <ThemeProvider theme={theme}>
-         {/* <SignUp/> */}
-         {/* <Login/> */}
-<MiniDrawer/>
-   {/* <PrimarySearchAppBar/> */}
+      <BrowserRouter>
+        <Routes>
+          {/* Authenticated Routes */}
+          {authenticated ? (
+            <Route path="/" element={<ClientLayout />}>
+              <Route index element={<Home />} />
+            </Route>
+          ) : (
+            <>
+              {/* Public Routes */}
+              <Route path="/" element={<SignUp />} />
+              <Route path="/signin" element={<Login />} />
+            </>
+          )}
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
-
-    </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -21,7 +21,7 @@ export const theme  = createTheme({
             backgroundColor:"#fff",
             color:"#000",
             boxShadow:"none",
-            borderBottom:`1px solid ${colors.light.border}`
+            borderBottom:`1px solid ${colors.light.background}`
           }
         }
       },
