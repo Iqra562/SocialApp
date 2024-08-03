@@ -8,42 +8,21 @@ import { Link } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { db } from "../../config/firebaseConfig"; // Ensure this path is correct
 import { setDoc, doc } from 'firebase/firestore';
+import { useDispatch, useSelector } from "react-redux";
+import { signUpUser } from "../../redux/authThunk";
 
 function SignUp() {
   const [isMounted, setIsMounted] = useState(false);
-  const [error, setError] = useState('');
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const password = watch('password');
+  const dispatch = useDispatch();
+  const {loading,error} = useSelector((state)=>state.auth)
 
-  const onSubmit = async (data) => {
-    console.log(data);
-    const { name, username, email, password } = data;
-    const auth = getAuth();
-  
-    try {
-      // Create user with Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-  
-      // Prepare data for Firestore
-      const userData = {
-        uid: user.uid,
-        name,
-        username,
-        email,
-        createdAt: new Date().toISOString(), // Use ISO string format for timestamp
-      };
-  
-      // Save data to Firestore
-      await setDoc(doc(db, "Users", user.uid), userData);
-  
-      // Handle successful sign-up
-      console.log('User signed up successfully!');
-    } catch (err) {
-      setError(err.message);
-      console.error('Error signing up:', err.message);
-    }
-  };
+const onSubmit = (data)=>{
+console.log(data);
+dispatch(signUpUser(data))
+
+}
   
   useEffect(() => {
     setIsMounted(true);
