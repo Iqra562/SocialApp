@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import { getAuth,createUserWithEmailAndPassword } from "firebase/auth";
-import { setDoc ,doc} from "firebase/firestore";
+import { setDoc ,doc, collection, getDocs, query, where} from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
 
 export const collectionName = "Users"
@@ -12,9 +12,16 @@ export const signUpUser = createAsyncThunk('auth/signUpUser',
         const auth= getAuth();
 
         try{
+              const User =  collection(db,'Users');
+              const q = query(User,where('username','==',username));
+              const querySnapshot = await getDocs(q);
+              if(!querySnapshot.empty){
+                              return rejectWithValue({ code: 'username-already-in-use', message: 'This username is already in use.' })
+              }
+
             const UserCredential = await createUserWithEmailAndPassword(auth,email,password)
             const user = UserCredential.user;
-            const userData = {
+            const userData = { 
                 userId:user.uid,
                 name,
                 username,
@@ -25,7 +32,14 @@ export const signUpUser = createAsyncThunk('auth/signUpUser',
             await setDoc(doc(db,collectionName,user.uid),userData)
 
         }catch(err){
-            return rejectWithValue(err.message)
+          if(err.code === 'auth/email-already-in-use'){
+           return rejectWithValue({ code: 'email-already-in-use', message: 'This email is already in use.' })
+        }
+          else if(err.code ==='username-already-in-use'){
+           return rejectWithValue({ code:'username-already-in-use', message: 'This user is already in use.' })
+        }
+
+            return rejectWithValue({ code: err.code, message: err.message })
         }
 
     }

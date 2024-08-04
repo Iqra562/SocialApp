@@ -1,33 +1,48 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import EmbeddedVideo from "../../components/EmbeddedVideo/EmbeddedVideo";
 import colors from "../../ThemeProvider/color";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from 'react-hook-form';
 import { Link } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { db } from "../../config/firebaseConfig"; // Ensure this path is correct
-import { setDoc, doc } from 'firebase/firestore';
 import { useDispatch, useSelector } from "react-redux";
 import { signUpUser } from "../../redux/authThunk";
+import {resetUsernameError,resetEmailError} from '../../redux/authSlice'
 
 function SignUp() {
   const [isMounted, setIsMounted] = useState(false);
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const { register, handleSubmit, watch, formState: { errors },reset } = useForm();
   const password = watch('password');
   const dispatch = useDispatch();
-  const {loading,error} = useSelector((state)=>state.auth)
+  const {loading,error,emailError,userNameError} = useSelector((state)=>state.auth)
 
 const onSubmit = (data)=>{
 console.log(data);
 dispatch(signUpUser(data))
+.unwrap()
+.then((userData)=>{
+console.log(userData);
+reset();
+})  
+.catch((err)=>{
+console.log("Error SIgn Up ", err)
+})
 
 }
   
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
+  const handleUserNameError = () => {
+    if (userNameError) {
+      dispatch(resetUsernameError());
+    }
+  };
+  const handleEmailError = () => {
+    if (emailError) {
+      dispatch(resetEmailError());
+    }
+  };
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
       <Box sx={{ flexBasis: isMounted ? "30%" : "40%", transition: "flex-basis 1s ease", height: '100vh', display: { xs: "none", sm: "none", md: 'block' }, overflow: 'hidden' }}>
@@ -88,10 +103,16 @@ dispatch(signUpUser(data))
                             message: "Max length exceeded"
                           }
                         })}
+                      onChange={handleUserNameError}
                       />
                       {errors.username && (
                         <span style={{ color: "red", fontSize: "12px", display: "block", marginTop: "6px" }}>
                           {errors.username.message}
+                        </span>
+                      )}
+                      {userNameError && (
+                        <span style={{ color: "red", fontSize: "12px", display: "block", marginTop: "6px" }}>
+                          {userNameError}
                         </span>
                       )}
                     </Box>
@@ -101,6 +122,7 @@ dispatch(signUpUser(data))
                   <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                     Email
                   </Typography>
+             
                   <Box>
                     <TextField
                       size="small"
@@ -116,12 +138,19 @@ dispatch(signUpUser(data))
                           message: "Max length exceeded"
                         }
                       })}
+                      onChange={handleEmailError}
                     />
                     {errors.email && (
                       <span style={{ color: "red", fontSize: "12px", display: "block", marginTop: "6px" }}>
                         {errors.email.message}
                       </span>
+                      
                     )}
+                         {emailError && (
+                  <span style={{ color: "red", fontSize: "12px", display: "block", marginTop: "6px" }}>
+                      {emailError}
+                      </span>
+                  )}
                   </Box>
                 </Box>
                 <Box>
@@ -166,14 +195,32 @@ dispatch(signUpUser(data))
                   )}
                 </Box>
                 <Box>
+                {/* <LoadingButton
+          size="small"
+          color="secondary"
+          onClick={handleClick}
+          loading={loading}
+          loadingPosition="start"
+          startIcon={<SaveIcon />}
+          variant="contained"
+        > */}
+          {/* </LoadingButton> */}
+          <Box>
                   <Button
                     variant="contained"
                     fullWidth
                     sx={{ borderRadius: "25px", textTransform: "unset" }}
                     type="submit"
+                    disabled={loading}
                   >
-                    Sign up
+                    {loading ? <CircularProgress size={24} color="inherit" /> : 'Sign Up'}
                   </Button>
+                  {error && (
+                    <Typography variant="body2" sx={{ color: "red", marginTop: "10px" }}>
+                      {error}
+                    </Typography>
+                  )}
+                </Box>
                 </Box>
               </Box>
             </form>
