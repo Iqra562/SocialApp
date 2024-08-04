@@ -1,8 +1,9 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import { getAuth,createUserWithEmailAndPassword } from "firebase/auth";
-import { setDoc ,doc, collection, getDocs, query, where} from "firebase/firestore";
+import { getAuth,createUserWithEmailAndPassword ,GoogleAuthProvider,signInWithPopup} from "firebase/auth";
+import { setDoc ,doc, collection, getDocs, query, where, getDoc} from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
-
+import { auth } from "../config/firebaseConfig";
+// import { auth, GoogleAuthProvider, signInWithPopup,  } from "../config/firebaseConfig";
 export const collectionName = "Users"
 
 export const signUpUser = createAsyncThunk('auth/signUpUser',
@@ -44,3 +45,39 @@ export const signUpUser = createAsyncThunk('auth/signUpUser',
 
     }
 )
+
+
+export const signUpWithGoogle = createAsyncThunk('auth/signUpWithGoogle',
+    async (_, { rejectWithValue }) => {
+      const provider = new GoogleAuthProvider();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        const userRef = doc(collection(db, 'Users'), user.uid);
+  
+        const userDoc = await getDoc(userRef);
+        
+        if (userDoc.exists()) {
+          return rejectWithValue({ code: 'auth/user-already-exists', message: 'User already exists' });
+        }else{
+
+          const userData = {
+            userId: user.uid,
+            name: user.displayName,
+            username: user.displayName,
+            email: user.email,
+            createdAt: new Date().toISOString(),
+          };
+          await setDoc(doc(collection(db, collectionName), user.uid), userData);
+          return userData;
+        }
+      } catch (err) {
+         if (err.code === 'auth/account-exists-with-different-credential') {
+          console.log("exisrs")
+          return rejectWithValue({ code: err.code, message: 'Account exists with different credentials' });
+        } else {
+          return rejectWithValue({ code: err.code, message: err.message });
+        }
+      }
+    }
+  );

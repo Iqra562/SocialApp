@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit"
-import  {signUpUser} from './authThunk'
+import  {signUpUser,signUpWithGoogle} from './authThunk'
 const initialState ={
     user: null,
     loading:false,
     error:null,
     emailError :null,
     userNameError:null,
+    googleSignUploading:false,
+    googleSignUpError:null,
+
 }
 
 const authSlice = createSlice({
@@ -43,6 +46,25 @@ const authSlice = createSlice({
     }
 
      })
+
+     .addCase(signUpWithGoogle.pending, (state) => {
+      state.googleSignUploading = true;
+      state.googleSignUpError = null;
+    })
+    .addCase(signUpWithGoogle.fulfilled, (state, action) => {
+      state.googleSignUploading = false;
+      state.user = action.payload;
+      console.log(action)
+    })
+    .addCase(signUpWithGoogle.rejected, (state, action) => {
+      state.googleSignUploading = false;
+      // if (action.payload?.code === 'auth/user-already-exists') {
+      //   state.googleSignUpError = action.payload.message;
+      // } else {
+        // }
+        state.googleSignUpError = action.payload?.message || 'An error occurred';
+    
+    });
     }
 })
 

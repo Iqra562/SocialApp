@@ -6,7 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useForm } from 'react-hook-form';
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signUpUser } from "../../redux/authThunk";
+import { signUpUser, signUpWithGoogle } from "../../redux/authThunk";
 import {resetUsernameError,resetEmailError} from '../../redux/authSlice'
 
 function SignUp() {
@@ -14,7 +14,7 @@ function SignUp() {
   const { register, handleSubmit, watch, formState: { errors },reset } = useForm();
   const password = watch('password');
   const dispatch = useDispatch();
-  const {loading,error,emailError,userNameError} = useSelector((state)=>state.auth)
+  const {loading,error,emailError,userNameError,googleSignUploading,googleSignUpError} = useSelector((state)=>state.auth)
 
 const onSubmit = (data)=>{
 console.log(data);
@@ -43,6 +43,14 @@ console.log("Error SIgn Up ", err)
       dispatch(resetEmailError());
     }
   };
+  const handleGoogleSignIn = () => {
+    dispatch(signUpWithGoogle())
+    .unwrap()
+    .then(()=>{
+      console.log(googleSignUpError)
+    })
+  };
+
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
       <Box sx={{ flexBasis: isMounted ? "30%" : "40%", transition: "flex-basis 1s ease", height: '100vh', display: { xs: "none", sm: "none", md: 'block' }, overflow: 'hidden' }}>
@@ -195,23 +203,14 @@ console.log("Error SIgn Up ", err)
                   )}
                 </Box>
                 <Box>
-                {/* <LoadingButton
-          size="small"
-          color="secondary"
-          onClick={handleClick}
-          loading={loading}
-          loadingPosition="start"
-          startIcon={<SaveIcon />}
-          variant="contained"
-        > */}
-          {/* </LoadingButton> */}
+             
           <Box>
                   <Button
                     variant="contained"
                     fullWidth
                     sx={{ borderRadius: "25px", textTransform: "unset" }}
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || googleSignUploading}
                   >
                     {loading ? <CircularProgress size={24} color="inherit" /> : 'Sign Up'}
                   </Button>
@@ -239,10 +238,20 @@ console.log("Error SIgn Up ", err)
                     border: `1px solid ${colors.light.border}`,
                   },
                 }}
-                startIcon={<FcGoogle />}
+                disabled={loading || googleSignUploading}
+                onClick={handleGoogleSignIn}
+                startIcon={!googleSignUploading && <FcGoogle />}
               >
-                Sign up with Google
+                 {googleSignUploading ? <CircularProgress size={24} color="inherit" /> : ' Sign Up with Google'}
+               
               </Button>
+               {googleSignUpError && (
+                <Box sx={{ textAlign: "center" }}>
+                    <Typography variant="body2" sx={{ color: "red", marginTop: "10px" }}>
+                      {googleSignUpError}
+                    </Typography>
+                    </Box>
+                  )}
               <Box sx={{ textAlign: "center", color: colors.light.subtitle, marginBottom: "50px" }}>
                 <Typography variant="subtitle2">
                   Already have an account? <Link to="/signin" style={{ cursor: "pointer", color: 'black' }}>Sign In</Link>
