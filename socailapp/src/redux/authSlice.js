@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import  {signUpUser,signUpWithGoogle} from './authThunk'
+import  {signUpUser,signUpWithGoogle,signInWithUserCredentials} from './authThunk'
 const initialState ={
     user: null,
     loading:false,
@@ -8,6 +8,7 @@ const initialState ={
     userNameError:null,
     googleSignUploading:false,
     googleSignUpError:null,
+    isNewUser:false
 
 }
 
@@ -33,6 +34,7 @@ const authSlice = createSlice({
      .addCase(signUpUser.fulfilled,(state,action)=>{
      state.loading = false;
      state.user = action.payload;
+     state.isNewUser =action.payload.isNewUser ;
 
      })
      .addCase(signUpUser.rejected,(state,action)=>{
@@ -54,7 +56,7 @@ const authSlice = createSlice({
     .addCase(signUpWithGoogle.fulfilled, (state, action) => {
       state.googleSignUploading = false;
       state.user = action.payload;
-      console.log(action)
+      state.isNewUser = action.payload.isNewUser;
     })
     .addCase(signUpWithGoogle.rejected, (state, action) => {
       state.googleSignUploading = false;
@@ -64,6 +66,21 @@ const authSlice = createSlice({
         // }
         state.googleSignUpError = action.payload?.message || 'An error occurred';
     
+    })
+    .addCase(signInWithUserCredentials.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(signInWithUserCredentials.fulfilled, (state, action) => {
+      console.log(action.payload,'payload')
+      state.loading = false;
+      state.user = action.payload;
+      state.authenticated = true; 
+    })
+    .addCase(signInWithUserCredentials.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+      state.authenticated = false;
     });
     }
 })

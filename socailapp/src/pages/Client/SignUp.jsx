@@ -1,5 +1,5 @@
 import { Box, Button, CircularProgress, TextField, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import EmbeddedVideo from "../../components/EmbeddedVideo/EmbeddedVideo";
 import colors from "../../ThemeProvider/color";
 import { FcGoogle } from "react-icons/fc";
@@ -8,20 +8,22 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signUpUser, signUpWithGoogle } from "../../redux/authThunk";
 import {resetUsernameError,resetEmailError} from '../../redux/authSlice'
+import UserAuthenticationContext from "../../context/UserAuthenticationContext";
 
 function SignUp() {
   const [isMounted, setIsMounted] = useState(false);
   const { register, handleSubmit, watch, formState: { errors },reset } = useForm();
   const password = watch('password');
   const dispatch = useDispatch();
-  const {loading,error,emailError,userNameError,googleSignUploading,googleSignUpError} = useSelector((state)=>state.auth)
+  const {loading,user,error,emailError,userNameError,googleSignUploading,googleSignUpError,isNewUser} = useSelector((state)=>state.auth)
+  const {setUserAuthenticationSuccessful} = useContext(UserAuthenticationContext)
+
 
 const onSubmit = (data)=>{
-console.log(data);
 dispatch(signUpUser(data))
 .unwrap()
-.then((userData)=>{
-console.log(userData);
+.then(()=>{
+setUserAuthenticationSuccessful(true);          
 reset();
 })  
 .catch((err)=>{
@@ -30,9 +32,24 @@ console.log("Error SIgn Up ", err)
 
 }
   
+  const handleGoogleSignUp = async() => {
+    const actionResult = await dispatch(signUpWithGoogle());
+
+    if (signUpWithGoogle.fulfilled.match(actionResult)) {
+      //setUserAuthenticationSuccessful(true)
+      const {  isNewUser } = actionResult.payload;
+
+      if (isNewUser) {
+ console.log(isNewUser,'is new User')
+} else{
+  console.log(isNewUser,'isNew user')
+}
+    } 
+  };
   useEffect(() => {
     setIsMounted(true);
   }, []);
+  
   const handleUserNameError = () => {
     if (userNameError) {
       dispatch(resetUsernameError());
@@ -43,14 +60,6 @@ console.log("Error SIgn Up ", err)
       dispatch(resetEmailError());
     }
   };
-  const handleGoogleSignIn = () => {
-    dispatch(signUpWithGoogle())
-    .unwrap()
-    .then(()=>{
-      console.log(googleSignUpError)
-    })
-  };
-
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
       <Box sx={{ flexBasis: isMounted ? "30%" : "40%", transition: "flex-basis 1s ease", height: '100vh', display: { xs: "none", sm: "none", md: 'block' }, overflow: 'hidden' }}>
@@ -214,11 +223,7 @@ console.log("Error SIgn Up ", err)
                   >
                     {loading ? <CircularProgress size={24} color="inherit" /> : 'Sign Up'}
                   </Button>
-                  {error && (
-                    <Typography variant="body2" sx={{ color: "red", marginTop: "10px" }}>
-                      {error}
-                    </Typography>
-                  )}
+                 
                 </Box>
                 </Box>
               </Box>
@@ -239,19 +244,13 @@ console.log("Error SIgn Up ", err)
                   },
                 }}
                 disabled={loading || googleSignUploading}
-                onClick={handleGoogleSignIn}
+                onClick={handleGoogleSignUp}
                 startIcon={!googleSignUploading && <FcGoogle />}
               >
                  {googleSignUploading ? <CircularProgress size={24} color="inherit" /> : ' Sign Up with Google'}
                
               </Button>
-               {googleSignUpError && (
-                <Box sx={{ textAlign: "center" }}>
-                    <Typography variant="body2" sx={{ color: "red", marginTop: "10px" }}>
-                      {googleSignUpError}
-                    </Typography>
-                    </Box>
-                  )}
+             
               <Box sx={{ textAlign: "center", color: colors.light.subtitle, marginBottom: "50px" }}>
                 <Typography variant="subtitle2">
                   Already have an account? <Link to="/signin" style={{ cursor: "pointer", color: 'black' }}>Sign In</Link>

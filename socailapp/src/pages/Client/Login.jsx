@@ -5,19 +5,34 @@ import colors from "../../ThemeProvider/color";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from 'react-hook-form';
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {signInWithUserCredentials} from '../../redux/authThunk'
 
 
 
 function Login() {
   const [isMounted, setIsMounted] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm();
-
-
-const onSubmit = (data)=>{
-console.log(data)
-}
-
+  const dispatch = useDispatch();
+  const  {user,error} = useSelector((state)=>state.auth)
+  const onSubmit = (data) => {
+    dispatch(signInWithUserCredentials(data))
+    .unwrap()
+      .then(() => {
+        console.log(user,'userrrrrrrrrr');
+      })
+      .catch((err) => {
+        console.log(error,'errorrooroo')
+      });
+      console.log('Sign-in failed:', error);
+  };
   useEffect(() => {
+    if (user) {
+      console.log(user, 'User data updated in useEffect');
+    }
+  }, [user]); // Run effect when `user` changes
+
+  useEffect(() => {  
 
 
     setIsMounted(true); 
@@ -127,10 +142,7 @@ console.log(data)
             type="password"
             {...register('password', {
               required: 'Password is required',
-              pattern: {
-                value: /^.{8,}$/,
-                message: 'Password must be at least 8 characters long',
-              },
+            
             })}
           />
           {errors.password && (
