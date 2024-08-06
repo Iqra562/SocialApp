@@ -10,42 +10,43 @@ import { signUpUser, signUpWithGoogle } from "../../redux/authThunk";
 import {resetUsernameError,resetEmailError} from '../../redux/authSlice'
 import UserAuthenticationContext from "../../context/UserAuthenticationContext";
 
+
 function SignUp() {
   const [isMounted, setIsMounted] = useState(false);
   const { register, handleSubmit, watch, formState: { errors },reset } = useForm();
   const password = watch('password');
   const dispatch = useDispatch();
-  const {loading,user,error,emailError,userNameError,googleSignUploading,googleSignUpError,isNewUser} = useSelector((state)=>state.auth)
-  const {setUserAuthenticationSuccessful} = useContext(UserAuthenticationContext)
+  const {loading,user,error,emailError,userNameError,googleSignUploading,googleSignUpError,isNewUser,userAuthenticationSuccessful} = useSelector((state)=>state.auth)
 
 
-const onSubmit = (data)=>{
-dispatch(signUpUser(data))
-.unwrap()
-.then(()=>{
-setUserAuthenticationSuccessful(true);          
-reset();
-})  
-.catch((err)=>{
-console.log("Error SIgn Up ", err)
-})
 
-}
+  const onSubmit = async (data) => {
+    // Dispatch the thunk action and capture the result
+    const actionResult = await dispatch(signUpUser(data));
   
-  const handleGoogleSignUp = async() => {
-    const actionResult = await dispatch(signUpWithGoogle());
-
-    if (signUpWithGoogle.fulfilled.match(actionResult)) {
-      //setUserAuthenticationSuccessful(true)
-      const {  isNewUser } = actionResult.payload;
-
-      if (isNewUser) {
- console.log(isNewUser,'is new User')
-} else{
-  console.log(isNewUser,'isNew user')
-}
+    // Check if the thunk action was fulfilled
+    if (signUpUser.fulfilled.match(actionResult)) {
+      const { isNewUser, user } = actionResult.payload;
+      console.log('is new user', isNewUser);
+      console.log('user', user);
     } 
   };
+  
+  useEffect(() => {
+  console.log(user,'useEffect')
+  console.log(isNewUser,'useEffect')
+  console.log(userAuthenticationSuccessful,'userAuthenticationSuccessful')
+
+  },[user,isNewUser,userAuthenticationSuccessful]); 
+
+  
+  
+  const handleGoogleSignUp =  () => {
+   dispatch(signUpWithGoogle());
+  
+  
+  };
+  
   useEffect(() => {
     setIsMounted(true);
   }, []);

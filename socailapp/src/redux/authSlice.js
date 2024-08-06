@@ -1,16 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit"
 import  {signUpUser,signUpWithGoogle,signInWithUserCredentials} from './authThunk'
-const initialState ={
-    user: null,
-    loading:false,
-    error:null,
-    emailError :null,
-    userNameError:null,
-    googleSignUploading:false,
-    googleSignUpError:null,
-    isNewUser:false
+const initialState = {
+  user: JSON.parse(localStorage.getItem('user')) || null,
+  loading: false,
+  error: null,
+  emailError: null,
+  userNameError: null,
+  googleSignUploading: false,
+  googleSignUpError: null,
+  isNewUser: true,
+  userAuthenticationSuccessful: !!localStorage.getItem('user'),
+};
 
-}
 
 const authSlice = createSlice({
     name:"auth" ,
@@ -18,9 +19,9 @@ const authSlice = createSlice({
     reducers: {
       resetEmailError: (state) => {
         state.emailError = null;
-      },
+      }, 
       resetUsernameError: (state) => {
-        state.userNameError = null; // Reset directly to null
+        state.userNameError = null; 
       },
     },
     extraReducers :(builder)=>{
@@ -33,7 +34,8 @@ const authSlice = createSlice({
      })
      .addCase(signUpUser.fulfilled,(state,action)=>{
      state.loading = false;
-     state.user = action.payload;
+     state.userAuthenticationSuccessfull = true;
+     state.user = action.payload.userData;
      state.isNewUser =action.payload.isNewUser ;
 
      })
@@ -53,35 +55,33 @@ const authSlice = createSlice({
       state.googleSignUploading = true;
       state.googleSignUpError = null;
     })
-    .addCase(signUpWithGoogle.fulfilled, (state, action) => {
+    .addCase(signUpWithGoogle.fulfilled, (state, action) => { 
       state.googleSignUploading = false;
-      state.user = action.payload;
       state.isNewUser = action.payload.isNewUser;
+      state.user = action.payload.userData;
+      state.userAuthenticationSuccessful = true;
+      localStorage.setItem('user', JSON.stringify(action.payload.userData));
     })
     .addCase(signUpWithGoogle.rejected, (state, action) => {
       state.googleSignUploading = false;
-      // if (action.payload?.code === 'auth/user-already-exists') {
-      //   state.googleSignUpError = action.payload.message;
-      // } else {
-        // }
-        state.googleSignUpError = action.payload?.message || 'An error occurred';
-    
-    })
-    .addCase(signInWithUserCredentials.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    })
-    .addCase(signInWithUserCredentials.fulfilled, (state, action) => {
-      console.log(action.payload,'payload')
-      state.loading = false;
-      state.user = action.payload;
-      state.authenticated = true; 
-    })
-    .addCase(signInWithUserCredentials.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-      state.authenticated = false;
+      state.googleSignUpError = action.payload?.message || 'An error occurred';
     });
+    
+    // .addCase(signInWithUserCredentials.pending, (state) => {
+    //   state.loading = true;
+    //   state.error = null;
+    // })
+    // .addCase(signInWithUserCredentials.fulfilled, (state, action) => {
+    //   console.log(action.payload,'payload')
+    //   state.loading = false;
+    //   state.user = action.payload;
+    //   state.authenticated = true; 
+    // })
+    // .addCase(signInWithUserCredentials.rejected, (state, action) => {
+    //   state.loading = false;
+    //   state.error = action.payload;
+    //   state.authenticated = false;
+    // });
     }
 })
 
