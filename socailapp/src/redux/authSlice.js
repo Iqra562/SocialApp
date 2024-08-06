@@ -34,10 +34,10 @@ const authSlice = createSlice({
      })
      .addCase(signUpUser.fulfilled,(state,action)=>{
      state.loading = false;
-     state.userAuthenticationSuccessfull = true;
+     state.userAuthenticationSuccessful = true;
      state.user = action.payload.userData;
      state.isNewUser =action.payload.isNewUser ;
-
+     localStorage.setItem('user', JSON.stringify(action.payload.userData));
      })
      .addCase(signUpUser.rejected,(state,action)=>{
      state.loading = false;

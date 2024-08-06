@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signUpUser, signUpWithGoogle } from "../../redux/authThunk";
 import {resetUsernameError,resetEmailError} from '../../redux/authSlice'
-import UserAuthenticationContext from "../../context/UserAuthenticationContext";
 
 
 function SignUp() {
@@ -16,32 +15,26 @@ function SignUp() {
   const { register, handleSubmit, watch, formState: { errors },reset } = useForm();
   const password = watch('password');
   const dispatch = useDispatch();
-  const {loading,user,error,emailError,userNameError,googleSignUploading,googleSignUpError,isNewUser,userAuthenticationSuccessful} = useSelector((state)=>state.auth)
+  const {loading,emailError,userNameError,googleSignUploading} = useSelector((state)=>state.auth)
 
 
 
-  const onSubmit = async (data) => {
-    // Dispatch the thunk action and capture the result
-    const actionResult = await dispatch(signUpUser(data));
-  
+  const onSubmit = (data) => {
+    // Dispatch the thunk action 
+    dispatch(signUpUser(data));
+    
     // Check if the thunk action was fulfilled
-    if (signUpUser.fulfilled.match(actionResult)) {
-      const { isNewUser, user } = actionResult.payload;
-      console.log('is new user', isNewUser);
-      console.log('user', user);
-    } 
+    // if (signUpUser.fulfilled.match(actionResult)) {
+    //   const { isNewUser, user } = actionResult.payload;
+    //   console.log('is new user', isNewUser);
+    //   console.log('user', user);
+    // } 
   };
   
-  useEffect(() => {
-  console.log(user,'useEffect')
-  console.log(isNewUser,'useEffect')
-  console.log(userAuthenticationSuccessful,'userAuthenticationSuccessful')
-
-  },[user,isNewUser,userAuthenticationSuccessful]); 
-
   
   
   const handleGoogleSignUp =  () => {
+    // Dispatch the thunk action 
    dispatch(signUpWithGoogle());
   
   
