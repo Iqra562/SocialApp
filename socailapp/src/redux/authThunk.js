@@ -103,23 +103,14 @@ export const signUpWithGoogle = createAsyncThunk('auth/signUpWithGoogle',
       const usersCollection = collection(db, collectionName);
       const q = query(usersCollection, where('email', '==', email));
       const querySnapshot = await getDocs(q);
-      
       if (!querySnapshot.empty) {
         const userData = querySnapshot.docs[0].data(); 
         return {
           ...userData,
-          uid: user.uid, 
-          authenticated: true,
         };
-      } else {
-        throw new Error('User data not found in Firestore');
-      }
+      } 
     } catch (err) {
-      // if (err.code === 'auth/invalid-login-credentials') {
-      //   return rejectWithValue({ code: err.code, message: err.message });
-      // } else {
-      //   return rejectWithValue({ code: 'user-not-found', message: err.message });
-      // }
+     
       return rejectWithValue({code:err.code,message : err.message})
     }
   });

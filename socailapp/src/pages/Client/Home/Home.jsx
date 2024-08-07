@@ -10,9 +10,13 @@ function Home(){
      console.log(user,'useEffect')
      console.log(isNewUser,'useEffect')
      console.log(isNewUser,'useEffect')
-     console.log(isNewUser,'userAuthenticationSuccessful')
+     console.log(userAuthenticationSuccessful,'userAuthenticationSuccessful')
    
      },[user,isNewUser,userAuthenticationSuccessful]); 
+
+     useEffect(()=>{
+console.log('home page opened')
+     })
 return(
      <>
      

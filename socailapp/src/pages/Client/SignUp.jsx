@@ -4,40 +4,41 @@ import EmbeddedVideo from "../../components/EmbeddedVideo/EmbeddedVideo";
 import colors from "../../ThemeProvider/color";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from 'react-hook-form';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signUpUser, signUpWithGoogle } from "../../redux/authThunk";
 import {resetUsernameError,resetEmailError} from '../../redux/authSlice'
-
+import { Navigate } from "react-router-dom";
 
 function SignUp() {
   const [isMounted, setIsMounted] = useState(false);
   const { register, handleSubmit, watch, formState: { errors },reset } = useForm();
   const password = watch('password');
   const dispatch = useDispatch();
-  const {loading,emailError,userNameError,googleSignUploading} = useSelector((state)=>state.auth)
-
-
+  const {loading,emailError,userNameError,googleSignUploading} = useSelector((state)=>state.auth);
+const navigate = useNavigate();
+  
 
   const onSubmit = (data) => {
-    // Dispatch the thunk action 
-    dispatch(signUpUser(data));
-    
-    // Check if the thunk action was fulfilled
-    // if (signUpUser.fulfilled.match(actionResult)) {
-    //   const { isNewUser, user } = actionResult.payload;
-    //   console.log('is new user', isNewUser);
-    //   console.log('user', user);
-    // } 
+    dispatch(signUpUser(data))
+      .unwrap()
+      .then(() => {
+        reset(); 
+        
+      })
+      .catch((error) => {
+        console.error('Error during sign up:', error);
+      });
   };
-  
-  
+
   
   const handleGoogleSignUp =  () => {
     // Dispatch the thunk action 
-   dispatch(signUpWithGoogle());
-  
-  
+   dispatch(signUpWithGoogle())
+   .unwrap()
+   .then(()=>{
+navigate('/')
+   })
   };
   
   useEffect(() => {
@@ -247,7 +248,7 @@ function SignUp() {
              
               <Box sx={{ textAlign: "center", color: colors.light.subtitle, marginBottom: "50px" }}>
                 <Typography variant="subtitle2">
-                  Already have an account? <Link to="/signin" style={{ cursor: "pointer", color: 'black' }}>Sign In</Link>
+                  Already have an account? <Link to="/" style={{ cursor: "pointer", color: 'black' }}>Sign In</Link>
                 </Typography>
               </Box>
             </Box>

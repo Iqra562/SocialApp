@@ -2,14 +2,20 @@ import { createSlice } from "@reduxjs/toolkit"
 import  {signUpUser,signUpWithGoogle,signInWithUserCredentials} from './authThunk'
 const initialState = {
   user: JSON.parse(localStorage.getItem('user')) || null,
+  userAuthenticationSuccessful: !!localStorage.getItem('user'),
+  isNewUser: false,
   loading: false,
   error: null,
   emailError: null,
   userNameError: null,
+  // sign up with google state 
   googleSignUploading: false,
   googleSignUpError: null,
-  isNewUser: true,
-  userAuthenticationSuccessful: !!localStorage.getItem('user'),
+  //user signIn state
+  signInLoading : false,
+  signInError:null,
+
+  
 };
 
 
@@ -22,6 +28,9 @@ const authSlice = createSlice({
       }, 
       resetUsernameError: (state) => {
         state.userNameError = null; 
+      },
+      resetSignInError: (state) => {
+        state.signInError = null; 
       },
     },
     extraReducers :(builder)=>{
@@ -65,26 +74,25 @@ const authSlice = createSlice({
     .addCase(signUpWithGoogle.rejected, (state, action) => {
       state.googleSignUploading = false;
       state.googleSignUpError = action.payload?.message || 'An error occurred';
-    });
+    })
     
-    // .addCase(signInWithUserCredentials.pending, (state) => {
-    //   state.loading = true;
-    //   state.error = null;
-    // })
-    // .addCase(signInWithUserCredentials.fulfilled, (state, action) => {
-    //   console.log(action.payload,'payload')
-    //   state.loading = false;
-    //   state.user = action.payload;
-    //   state.authenticated = true; 
-    // })
-    // .addCase(signInWithUserCredentials.rejected, (state, action) => {
-    //   state.loading = false;
-    //   state.error = action.payload;
-    //   state.authenticated = false;
-    // });
+    .addCase(signInWithUserCredentials.pending, (state) => {
+      state.signInLoading = true;
+      state.signInError = null;
+    })
+    .addCase(signInWithUserCredentials.fulfilled, (state, action) => {
+      state.signInLoading = false;
+      state.user = action.payload;
+      state.userAuthenticationSuccessful = true;
+        localStorage.setItem('user', JSON.stringify(action.payload));
+    })
+    .addCase(signInWithUserCredentials.rejected, (state, action) => {
+      state.signInLoading = false;
+      state.signInError = action.payload;
+    });
     }
 })
 
-export const {resetEmailError,resetUsernameError}  =authSlice.actions
+export const {resetEmailError,resetUsernameError,resetSignInError}  =authSlice.actions
 
 export default authSlice.reducer;

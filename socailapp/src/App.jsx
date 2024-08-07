@@ -6,8 +6,7 @@ import ClientLayout from './Layouts/ClientLayout/ClientLayout.jsx';
 import Home from './pages/Client/Home/Home';
 import SignUp from './pages/Client/SignUp';
 import Login from './pages/Client/Login';  
-import { useContext, useEffect } from 'react';
-import UserAuthenticationContext from './context/UserAuthenticationContext.jsx';
+import {  useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 function App() {
@@ -23,17 +22,19 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <Routes>
+      <Routes>
           {/* Authenticated Routes */}
           {authenticated ? (
             <Route path="/" element={<ClientLayout />}>
               <Route index element={<Home />} />
+              {/* <Route path="*" element={<Navigate to="/" />} /> */}
             </Route>
           ) : (
             <>
               {/* Public Routes */}
-              <Route path="/" element={<SignUp />} />
-              <Route path="/signin" element={<Login />} />
+              <Route path="/" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              {/* <Route path="*" element={<Navigate to="/signin" />} /> */}
             </>
           )}
         </Routes>
