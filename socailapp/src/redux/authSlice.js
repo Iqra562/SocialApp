@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import  {signUpUser,signUpWithGoogle,signInWithUserCredentials} from './authThunk'
+import  {signUpUser,signUpWithGoogle,signInWithUserCredentials,signInWithGoogle} from './authThunk'
 const initialState = {
   user: JSON.parse(localStorage.getItem('user')) || null,
   userAuthenticationSuccessful: !!localStorage.getItem('user'),
@@ -14,6 +14,9 @@ const initialState = {
   //user signIn state
   signInLoading : false,
   signInError:null,
+  //user signIn with google
+  signInWithGoogleLoading : false,
+  signInWithGoogleError:null,
 
   
 };
@@ -31,6 +34,7 @@ const authSlice = createSlice({
       },
       resetSignInError: (state) => {
         state.signInError = null; 
+        state.signInWithGoogleError = null;
       },
     },
     extraReducers :(builder)=>{
@@ -89,6 +93,21 @@ const authSlice = createSlice({
     .addCase(signInWithUserCredentials.rejected, (state, action) => {
       state.signInLoading = false;
       state.signInError = action.payload;
+    })
+    .addCase(signInWithGoogle.pending, (state) => {
+      state.signInWithGoogleLoading = true;
+      state.signInWithGoogleError = null;
+    })
+    .addCase(signInWithGoogle.fulfilled, (state, action) => {
+      state.signInWithGoogleLoading = false;
+      state.user = action.payload;
+      state.userAuthenticationSuccessful = true;
+      localStorage.setItem('user', JSON.stringify(action.payload));
+
+    })
+    .addCase(signInWithGoogle.rejected, (state, action) => {
+      state.signInWithGoogleLoading = false;
+      state.signInWithGoogleError = action.payload;
     });
     }
 })

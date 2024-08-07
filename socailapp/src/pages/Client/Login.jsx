@@ -1,4 +1,4 @@
-import { Box, Button, Container, TextField, Typography, FormHelperText } from "@mui/material";
+import { Box, Button, Container, TextField, Typography, FormHelperText, CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import EmbeddedVideo from "../../components/EmbeddedVideo/EmbeddedVideo";
 import colors from "../../ThemeProvider/color";
@@ -6,7 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useForm } from 'react-hook-form';
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signInWithUserCredentials } from '../../redux/authThunk'
+import { signInWithUserCredentials ,signInWithGoogle} from '../../redux/authThunk'
 import { resetSignInError } from "../../redux/authSlice"; 
 import  {useNavigate} from 'react-router-dom'
 
@@ -14,9 +14,8 @@ function Login() {
   const [isMounted, setIsMounted] = useState(false);
   const { register, handleSubmit, formState: { errors },reset } = useForm();
   const dispatch = useDispatch();
-  const { user, signInError, userAuthenticationSuccessful} = useSelector((state) => state.auth);
-  const [forceRender, setForceRender] = useState(0);
   const navigate = useNavigate();
+  const { user, signInError, userAuthenticationSuccessful,signInLoading,signInWithGoogleLoading,signInWithGoogleError} = useSelector((state) => state.auth);
   const onSubmit = (data) => {
     dispatch(signInWithUserCredentials(data))
       .unwrap()
@@ -29,13 +28,13 @@ function Login() {
       });
   };
  
- useEffect(()=>{
-if(userAuthenticationSuccessful){
-// navigate('/')
-console.log('is it ')
- 
+const handleGoogleSignIn = ()=>{
+  dispatch(signInWithGoogle())
+  .unwrap()
+  .then(()=>{
+    navigate('/')
+  })
 }
- },[userAuthenticationSuccessful])
 
 const handleSignInError = ()=>{
   if (signInError) {
@@ -70,12 +69,11 @@ const handleSignInError = ()=>{
           >
             Sign in to Socail
           </Typography>
-
-          {signInError && (
-            <Typography variant="h6" style={{ color: "red", display: "block", marginTop: "6px" }}>
-              Invalid credentials or user not exist               
-           </Typography>
-          )}
+{(signInError || signInWithGoogleError) && (
+  <Typography variant="h6" style={{ color: "red", display: "block", marginTop: "6px" }}>
+    Invalid credentials or user not exist
+  </Typography>
+)}
 
           <Box sx={{
             width: {
@@ -174,18 +172,17 @@ const handleSignInError = ()=>{
                 </Box>
 
                 <Box >
-                  <Button
+            
+<Button
                     variant="contained"
                     fullWidth
-
-                    sx={{
-                      borderRadius: "25px",
-                      textTransform: "unset",
-                    }}
+                    sx={{ borderRadius: "25px", textTransform: "unset" }}
                     type="submit"
+                    disabled={signInLoading  || signInWithGoogleLoading}
                   >
-                    Sign in
+                    {signInLoading ? <CircularProgress size={24} color="inherit" /> : 'Sign In'}
                   </Button>
+
                 </Box>
               </Box>
             </form>
@@ -210,9 +207,12 @@ const handleSignInError = ()=>{
                     border: `1px solid ${colors.light.border}`,
                   },
                 }}
-                startIcon={<FcGoogle />}
+                startIcon={!signInWithGoogleLoading &&  <FcGoogle />}
+                disabled={signInLoading  || signInWithGoogleLoading}
+                onClick={handleGoogleSignIn}
               >
-                Sign In with Google
+                 {signInWithGoogleLoading ? <CircularProgress size={24} color="inherit" /> : 'Sign In with Google'}
+            
               </Button>
               <Box sx={{ textAlign: "center", color: colors.light.subtitle, marginBottom: "50px" }}>
 

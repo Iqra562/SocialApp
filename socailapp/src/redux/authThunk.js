@@ -116,13 +116,29 @@ export const signUpWithGoogle = createAsyncThunk('auth/signUpWithGoogle',
   });
 
 
-  // signIn with google  
+  // signIn with google  pop up
 
-  export const signInWithGoogle =createAsyncThunk('auth/signInWithGoogle',async(_,{rejectWithValue})=>{
-                 const provider= new GoogleAuthProvider();
-                  try{
-
-                  }catch(err){
-
-                  }
-  })
+  export const signInWithGoogle = createAsyncThunk(
+    'auth/signInWithGoogle',
+    async (_, { rejectWithValue }) => {
+      const provider = new GoogleAuthProvider();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        
+        const email = user.email;
+        const usersCollection = collection(db, collectionName); 
+        const q = query(usersCollection, where('email', '==', email));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+          const userData = querySnapshot.docs[0].data();
+          return {
+            ...userData,
+          };
+        } 
+      } catch (err) {
+        return rejectWithValue({code:err.code,message : err.message})
+      }
+    }
+  );
