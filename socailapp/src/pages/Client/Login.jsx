@@ -47,7 +47,7 @@ const handleSignInError = ()=>{
 
     setIsMounted(true);
   }, []);
-
+console.log(signInWithGoogleError)
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
       <Box sx={{ flexBasis: isMounted ? "30%" : "40%", transition: "flex-basis 1s ease", height: '100vh', display: { xs: "none", sm: "none", md: 'block' }, overflow: 'hidden' }}>

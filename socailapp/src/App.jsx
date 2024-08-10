@@ -8,6 +8,7 @@ import SignUp from './pages/Client/SignUp';
 import Login from './pages/Client/Login';  
 import {  useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import SidebarCustom from './components/Client/SidebarCustom/SidebarCustom.jsx';
 
 function App() {
   const {userAuthenticationSuccessful} = useSelector((state)=>state.auth)
@@ -20,26 +21,27 @@ function App() {
   })
   const authenticated = userAuthenticationSuccessful;  
   return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-      <Routes>
-          {/* Authenticated Routes */}
-          {authenticated ? (
-            <Route path="/" element={<ClientLayout />}>
-              <Route index element={<Home />} />
-              {/* <Route path="*" element={<Navigate to="/" />} /> */}
-            </Route>
-          ) : (
-            <>
-              {/* Public Routes */}
-              <Route path="/" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              {/* <Route path="*" element={<Navigate to="/signin" />} /> */}
-            </>
-          )}
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+    // <ThemeProvider theme={theme}>
+    //   <BrowserRouter>
+    //   <Routes>
+    //       {/* Authenticated Routes */}
+    //       {authenticated ? (
+    //         <Route path="/" element={<ClientLayout />}>
+    //           <Route index element={<Home />} />
+    //           {/* <Route path="*" element={<Navigate to="/" />} /> */}
+    //         </Route>
+    //       ) : (
+    //         <>
+    //           {/* Public Routes */}
+    //           <Route path="/" element={<Login />} />
+    //           <Route path="/signup" element={<SignUp />} />
+    //           {/* <Route path="*" element={<Navigate to="/signin" />} /> */}
+    //         </>
+    //       )}
+    //     </Routes>
+    //   </BrowserRouter>
+    // </ThemeProvider>
+    <SidebarCustom/>
   );
 }
 

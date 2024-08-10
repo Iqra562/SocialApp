@@ -114,31 +114,33 @@ export const signUpWithGoogle = createAsyncThunk('auth/signUpWithGoogle',
       return rejectWithValue({code:err.code,message : err.message})
     }
   });
+// signIn with Google pop up
+export const signInWithGoogle = createAsyncThunk(
+  'auth/signInWithGoogle',
+  async (_, { rejectWithValue }) => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const email = user.email;
 
+      // Query Firestore to check if the user exists
+      const usersCollection = collection(db, 'users'); // Use your collection name
+      const q = query(usersCollection, where('email', '==', email));
+      const querySnapshot = await getDocs(q);
 
-  // signIn with google  pop up
-
-  export const signInWithGoogle = createAsyncThunk(
-    'auth/signInWithGoogle',
-    async (_, { rejectWithValue }) => {
-      const provider = new GoogleAuthProvider();
-      try {
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-        
-        const email = user.email;
-        const usersCollection = collection(db, collectionName); 
-        const q = query(usersCollection, where('email', '==', email));
-        const querySnapshot = await getDocs(q);
-        
-        if (!querySnapshot.empty) {
-          const userData = querySnapshot.docs[0].data();
-          return {
-            ...userData,
-          };
-        } 
-      } catch (err) {
-        return rejectWithValue({code:err.code,message : err.message})
+      if (!querySnapshot.empty) {
+        // User found in Firestore, return the existing user data
+        const userData = querySnapshot.docs[0].data();
+        return {
+          ...userData,
+        };
+      } else {
+        // User not found in Firestore, reject the sign-in
+        return rejectWithValue({ code: 'auth/user-not-found', message: 'User does not exist' });
       }
+    } catch (err) {
+      return rejectWithValue({ code: err.code, message: err.message });
     }
-  );
+  }
+);

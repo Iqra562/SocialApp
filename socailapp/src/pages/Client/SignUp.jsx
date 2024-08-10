@@ -24,6 +24,7 @@ const navigate = useNavigate();
       .unwrap()
       .then(() => {
         reset(); 
+        navigate('/')
         
       })
       .catch((error) => {
