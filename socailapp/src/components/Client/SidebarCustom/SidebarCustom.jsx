@@ -10,18 +10,23 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import { Avatar, Typography } from '@mui/material';
 import colors from '../../../ThemeProvider/color'
-import sideItem from '../Sidebar/Sidebar';
+import SideBarItems from './Sidebar';
+import { useContext } from 'react';
+import ThemeSwitcherContext from '../../../context/ThemeSwitcherContext/ThemeSwitcherContext';
 function SidebarCustom(){
+  const sideItems = SideBarItems();
+  const {mode} = useContext(ThemeSwitcherContext)
     return (
-        <Box  sx={{maxWidth:220,height:'100vh'  ,  borderRight: `1px solid ${colors.light.border}` }}>
+      <>
+        <Box  sx={{width:'15rem',height:'100vh', backgroundColor:colors[mode].background,   borderRight: `1px solid ${colors[mode].border}` }}>
            <Box sx={{py:2}}>
 
-      <Typography variant="h6" sx={{ px: 2.5,mt:2,mb:1 }}>
+      <Typography variant="h6" sx={{ px: 2.5,mt:2,mb:1,color:colors[mode].text }}>
         Sidebar Heading
       </Typography>
            </Box>
-            <List sx={{backgroundColor:"",px:0}}>
-              {sideItem.map((item,index)=>{
+            <List sx={{px:0}}>
+              {sideItems.map((item,index)=>{
               const IconComponent  = item.icon;
               return(
 
@@ -34,16 +39,18 @@ function SidebarCustom(){
                   py:  0.8,
                   borderRadius: 2,
                   
-                }}>
+                }}
+                onClick={item.onClick}
+                >
                 <ListItemIcon>  
-                  <IconComponent size='24' color={colors.light.icon}/>  
+                  <IconComponent size='24' color={colors[mode].icon}/>  
                 </ListItemIcon>
                 <ListItemText 
   primary={item.name} 
   sx={{ 
     marginLeft: "-24px", 
     fontWeight: 'bold', 
-    color: colors.light.text 
+    color: colors[mode].text 
   }} 
 />
 
@@ -69,7 +76,7 @@ function SidebarCustom(){
       sx={{ width: 20, height: 20 ,border:'1px solid white',borderRadius:'100%', boxShadow: `0 0 0 1px ${colors.light.text}`  }} 
       />
       </ListItemIcon>
-    <ListItemText primary="Inbox" sx={{ marginLeft: "-24px" }} />
+    <ListItemText primary="Inbox" sx={{ marginLeft: "-24px", color: colors[mode].text }} />
                 </ListItemButton> 
               </ListItem>
             
@@ -77,8 +84,13 @@ function SidebarCustom(){
         
           
             </List>
+          
          
         </Box>
+      
+
+      </>
+
       );
 }
 

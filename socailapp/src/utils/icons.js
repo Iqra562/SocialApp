@@ -3,13 +3,15 @@ import { GoHome } from 'react-icons/go';
 import { IoCreateOutline } from "react-icons/io5";
 import { MdOutlineDarkMode } from "react-icons/md";
 import { IoLogOutOutline } from "react-icons/io5";
-import { FiPlusSquare } from "react-icons/fi";
+import { VscDiffAdded } from "react-icons/vsc";
+import { FiSun } from "react-icons/fi";
 
 export const icons = {
   home: GoHome,
-  create:FiPlusSquare,
+  create:VscDiffAdded ,
   saved:IoCreateOutline,
   darkmode:MdOutlineDarkMode,
+  lightmode:FiSun,
   logout:IoLogOutOutline
 
 };

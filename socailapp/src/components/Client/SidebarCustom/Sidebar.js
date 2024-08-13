@@ -1,16 +1,25 @@
-import { deepOrange } from "@mui/material/colors";
-import { Avatar } from "@mui/material";
+import React, { useContext } from "react";
+import ThemeSwitcherContext from "../../../context/ThemeSwitcherContext/ThemeSwitcherContext";
 import { icons } from "../../../utils/icons";
 
-const { home, create, saved, darkmode, logout } = icons;
+const { home, create, saved, darkmode, lightmode, logout } = icons;
 
-const sideItem = [
-  { icon: home, name: "Home" },
-  { icon: create, name: "Create" },
-  { icon: saved, name: "Save" },
-  { icon: darkmode, name: "Darkmode" },
-  { icon: logout, name: "Logout" },
-];
+const SideBarItems = () => {
+  const { darkMode, setDarkMode } = useContext(ThemeSwitcherContext);
 
+  const sideItem = [
+    { icon: home, name: "Home" },
+    { icon: create, name: "Create" },
+    { icon: saved, name: "Save" },
+    { 
+      icon: darkMode ? lightmode :darkmode , 
+      name: darkMode ? "Lightmode" : "Darkmode", 
+      onClick: () => setDarkMode(!darkMode)
+    },
+    { icon: logout, name: "Logout" },
+  ];
 
-export default sideItem
+  return sideItem;
+};
+
+export default SideBarItems;

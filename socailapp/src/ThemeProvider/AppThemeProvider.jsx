@@ -1,9 +1,10 @@
 import { createTheme } from "@mui/material";
 import colors from "./color";
 import { deepPurple, green, purple, red } from "@mui/material/colors";
-export const theme  = createTheme({
+export const getTheme  =(mode)=>{
+return createTheme({
     palette:{
-      mode:'light'  ,
+      mode:mode  ,
       primary:{
         main:colors.light.primary,
         dark:colors.light.hover,
@@ -57,3 +58,4 @@ disableFocusRipple:true,
     },
 
 })
+}

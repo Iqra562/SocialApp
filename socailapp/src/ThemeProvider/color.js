@@ -9,14 +9,17 @@ const  colors ={
      border:"#0000001a",
      background:"#ffffff",
      lightPurple:"#dcd5e5",
-      subtitle:"#beb9b9"
+      subtitle:"#beb9b9",
+      shadow:"#0000001a"
     },
     dark:{
         primary:"",
         text:"#f1f1f1",
         icon:"#fff",
         border:"#ffffff33",
-        background:"#0f0f0f"
+        background:"#000000",
+      shadow:"#262626"
+
     }
 }
 

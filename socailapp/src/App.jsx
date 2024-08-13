@@ -1,14 +1,16 @@
 import './App.css';
 import { ThemeProvider } from '@mui/material';
-import { theme } from './ThemeProvider/AppThemeProvider';
+import { getTheme } from './ThemeProvider/AppThemeProvider';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ClientLayout from './Layouts/ClientLayout/ClientLayout.jsx';
 import Home from './pages/Client/Home/Home';
 import SignUp from './pages/Client/SignUp';
 import Login from './pages/Client/Login';  
-import {  useEffect } from 'react';
+import {  useContext, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import SidebarCustom from './components/Client/SidebarCustom/SidebarCustom.jsx';
+import ThemeSwitcherContextProvider from './context/ThemeSwitcherContext/ThemeSwitcherContextProvider.jsx';
+import ThemeSwitcherContext from './context/ThemeSwitcherContext/ThemeSwitcherContext.jsx';
 
 function App() {
   const {userAuthenticationSuccessful} = useSelector((state)=>state.auth)
@@ -19,29 +21,34 @@ function App() {
 
 
   })
-  const authenticated = userAuthenticationSuccessful;  
+  const authenticated = true;  
+  const { mode } = useContext(ThemeSwitcherContext);
   return (
-    // <ThemeProvider theme={theme}>
-    //   <BrowserRouter>
-    //   <Routes>
-    //       {/* Authenticated Routes */}
-    //       {authenticated ? (
-    //         <Route path="/" element={<ClientLayout />}>
-    //           <Route index element={<Home />} />
-    //           {/* <Route path="*" element={<Navigate to="/" />} /> */}
-    //         </Route>
-    //       ) : (
-    //         <>
-    //           {/* Public Routes */}
-    //           <Route path="/" element={<Login />} />
-    //           <Route path="/signup" element={<SignUp />} />
-    //           {/* <Route path="*" element={<Navigate to="/signin" />} /> */}
-    //         </>
-    //       )}
-    //     </Routes>
-    //   </BrowserRouter>
-    // </ThemeProvider>
-    <SidebarCustom/>
+    <ThemeProvider theme={getTheme(mode)}>
+      
+
+      <BrowserRouter>
+      <Routes>
+          {/* Authenticated Routes */}
+          {authenticated ? (
+            <Route path="/" element={<ClientLayout />}>
+              <Route index element={<Home />} />
+              {/* <Route path="*" element={<Navigate to="/" />} /> */}
+            </Route>
+          ) : (
+            <>
+              {/* Public Routes */}
+              <Route path="/" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              {/* <Route path="*" element={<Navigate to="/signin" />} /> */}
+            </>
+          )}
+        </Routes>
+      </BrowserRouter>
+     
+
+    </ThemeProvider>
+    // <SidebarCustom/>
   );
 }
 
