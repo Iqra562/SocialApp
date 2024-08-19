@@ -41,7 +41,7 @@ export default function PostCard() {
 
   return (
 <Card sx={{  marginBottom: "30px", boxShadow: 0, backgroundColor: colors[mode].background,
-  borderBottom:`1px solid ${colors[mode].border}` }}>
+  borderBottom:`1px solid ${colors[mode].border}` ,borderRadius:0}}>
   <CardHeader
     avatar={
       <Avatar sx={{ bgcolor: red[500],width:'30px',height:'30px' }} aria-label="recipe">
