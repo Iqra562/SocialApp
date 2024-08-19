@@ -4,6 +4,7 @@ import { Box } from '@mui/material'
 import { useSelector } from 'react-redux'
 import colors from '../../../ThemeProvider/color.js'
 import ThemeSwitcherContext from '../../../context/ThemeSwitcherContext/ThemeSwitcherContext.jsx'
+import useResponsive from '../../../utils/useResponsive.js'
 function Home(){
   const {user,googleSignUploading,googleSignUpError,isNewUser,userAuthenticationSuccessful} = useSelector((state)=>state.auth)
   useEffect(() => {
@@ -18,6 +19,7 @@ function Home(){
 console.log('home page opened')
      })
      const {mode} = useContext(ThemeSwitcherContext)
+     const {isSmallScreen,isMdScreen} = useResponsive();
 return(
      <>
      
@@ -26,17 +28,15 @@ return(
          flexDirection:"column",
          justifyContent:"center",
          alignItems:"center",
-         backgroundColor:colors[mode].background
+         backgroundColor:colors[mode].background,
+         paddingX: isSmallScreen ? '2%' :isMdScreen ? '15%' : '20%'
+
      }}>
-     <Box sx={{
-     
-         marginTop:'100px',
-       
-     }}>
+   
           <PostCard/>
+          <PostCard/> 
           <PostCard/>
-          <PostCard/>
-     </Box>
+
      </Box>
       {/* <Sidebar/> */}
 

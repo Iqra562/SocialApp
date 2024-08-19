@@ -165,7 +165,7 @@ export default function PrimarySearchAppBar() {
         <Toolbar sx={{backgroundColor:colors[mode].background}} > 
          
        
-          <Search>
+          <Search  sx={{ flexGrow: 1,backgroundColor: colors[mode].searchbar }}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -174,7 +174,7 @@ export default function PrimarySearchAppBar() {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-          <Box sx={{ flexGrow: 1 }} />
+          <Box />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" sx={{color:colors[mode].icon}}>
               <Badge badgeContent={4} color="error">
