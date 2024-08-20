@@ -193,7 +193,7 @@ console.log(signInWithGoogleError)
               gap: "20px",
               marginTop: "20px"
             }}>
-              <Button
+              {/* <Button
                 variant="outlined"
                 fullWidth
 
@@ -213,7 +213,7 @@ console.log(signInWithGoogleError)
               >
                  {signInWithGoogleLoading ? <CircularProgress size={24} color="inherit" /> : 'Sign In with Google'}
             
-              </Button>
+              </Button> */}
               <Box sx={{ textAlign: "center", color: colors.light.subtitle, marginBottom: "50px" }}>
 
                 <Typography variant="subtitle2" >

@@ -144,3 +144,13 @@ export const signInWithGoogle = createAsyncThunk(
     }
   }
 );
+
+
+// logout the user
+export const logOutUserCredentials = createAsyncThunk('logout', async () => {
+    // Clear user-related data and theme  from local storage
+    localStorage.removeItem('user');
+    localStorage.setItem('darkMode', JSON.stringify(false));
+    
+});
+ 

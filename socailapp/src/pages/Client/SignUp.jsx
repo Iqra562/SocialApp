@@ -226,7 +226,7 @@ navigate('/')
             </form>
 
             <Box sx={{ display: "flex", flexDirection: "column", gap: "20px", marginTop: "20px" }}>
-              <Button
+              {/* <Button
                 variant="outlined"
                 fullWidth
                 sx={{
@@ -245,7 +245,7 @@ navigate('/')
               >
                  {googleSignUploading ? <CircularProgress size={24} color="inherit" /> : ' Sign Up with Google'}
                
-              </Button>
+              </Button> */}
              
               <Box sx={{ textAlign: "center", color: colors.light.subtitle, marginBottom: "50px" }}>
                 <Typography variant="subtitle2">

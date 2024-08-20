@@ -7,13 +7,15 @@ import ThemeSwitcherContext from '../../../context/ThemeSwitcherContext/ThemeSwi
 import { Link } from 'react-router-dom';
 import { StyledAvatar, SideBox, StyledListItemButton, StyledListItemText, StyledListItem } from './StyledComponent';
 import useResponsive from '../../../utils/useResponsive';
+import { useSelector } from 'react-redux';
 
 
 function SidebarCustom() {
   const sideItems = SideBarItems();
   const { mode } = useContext(ThemeSwitcherContext);
   const { isMdScreen, isSmallScreen } = useResponsive();
- 
+  const {user} = useSelector((state)=>state.auth)
+  console.log(user)
   return (
     <>
       <SideBox >
@@ -62,10 +64,10 @@ function SidebarCustom() {
           <StyledListItem disablePadding>
             <StyledListItemButton>
             <ListItemIcon sx={{minWidth:isSmallScreen ? 0 : '56px'}}>
-                <StyledAvatar alt="User Name" src="/path/to/profile-image.jpg" />
+                <StyledAvatar alt={user.name} src="/path/to/profile-image.jpg" />
               </ListItemIcon>
               {!isMdScreen && (
-                <StyledListItemText primary="Inbox" />
+                <StyledListItemText primary={user.name} />
               )}
             </StyledListItemButton>
           </StyledListItem>

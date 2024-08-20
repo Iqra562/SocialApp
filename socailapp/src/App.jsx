@@ -22,7 +22,7 @@ function App() {
 
 
   })
-  const authenticated = true;  
+  const authenticated = userAuthenticationSuccessful;  
   const { mode } = useContext(ThemeSwitcherContext);
   return (
     <ThemeProvider theme={getTheme(mode)}>
@@ -42,7 +42,6 @@ function App() {
               {/* Public Routes */}
               <Route path="/" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
-              {/* <Route path="*" element={<Navigate to="/signin" />} /> */}
             </>
           )}
         </Routes>
@@ -50,7 +49,6 @@ function App() {
      
 
     </ThemeProvider>
-    // <SidebarCustom/>
   );
 }
 

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import  {signUpUser,signUpWithGoogle,signInWithUserCredentials,signInWithGoogle} from './authThunk'
+import  {signUpUser,signUpWithGoogle,signInWithUserCredentials,signInWithGoogle,logOutUserCredentials} from './authThunk'
 const initialState = {
   user: JSON.parse(localStorage.getItem('user')) || null,
   userAuthenticationSuccessful: !!localStorage.getItem('user'),
@@ -108,6 +108,24 @@ const authSlice = createSlice({
     .addCase(signInWithGoogle.rejected, (state, action) => {
       state.signInWithGoogleLoading = false;
       state.signInWithGoogleError = action.payload;
+    })
+    .addCase(logOutUserCredentials.fulfilled, (state) => {
+      // Reset state when user logsout
+      state.user = null;
+      state.userAuthenticationSuccessful = false;
+      state.isNewUser = false;
+      state.loading = false;
+      state.error = null;
+      state.emailError = null;
+      state.userNameError = null;
+      state.googleSignUploading = false;
+      state.googleSignUpError = null;
+      state.signInLoading = false;
+      state.signInError = null;
+      state.signInWithGoogleLoading = false;
+      state.signInWithGoogleError = null;
+      
+
     });
     }
 })
