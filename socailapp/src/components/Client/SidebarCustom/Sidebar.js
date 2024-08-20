@@ -8,8 +8,8 @@ const SideBarItems = () => {
   const { darkMode, setDarkMode } = useContext(ThemeSwitcherContext);
 
   const sideItem = [
-    { icon: home, name: "Home" },
-    { icon: create, name: "Create" },
+    { icon: home, name: "Home" ,Link:'/'},
+    { icon: create, name: "Create",Link:'/createPost' },
     { icon: saved, name: "Save" },
     { 
       icon: darkMode ? lightmode :darkmode , 

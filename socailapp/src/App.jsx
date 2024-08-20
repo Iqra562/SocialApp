@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import SidebarCustom from './components/Client/SidebarCustom/SidebarCustom.jsx';
 import ThemeSwitcherContextProvider from './context/ThemeSwitcherContext/ThemeSwitcherContextProvider.jsx';
 import ThemeSwitcherContext from './context/ThemeSwitcherContext/ThemeSwitcherContext.jsx';
+import CreatePost from './pages/Client/CreatePost/CreatePost.jsx';
 
 function App() {
   const {userAuthenticationSuccessful} = useSelector((state)=>state.auth)
@@ -33,6 +34,7 @@ function App() {
           {authenticated ? (
             <Route path="/" element={<ClientLayout />}>
               <Route index element={<Home />} />
+              <Route  path='/createPost' element={<CreatePost />} />
               {/* <Route path="*" element={<Navigate to="/" />} /> */}
             </Route>
           ) : (

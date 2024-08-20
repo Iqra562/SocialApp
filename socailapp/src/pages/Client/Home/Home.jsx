@@ -29,7 +29,7 @@ return(
          justifyContent:"center",
          alignItems:"center",
          backgroundColor:colors[mode].background,
-         paddingX: isSmallScreen ? '2%' :isMdScreen ? '15%' : '20%',
+         paddingX: isSmallScreen ? '2%' :isMdScreen ? '15%' : '30%',
          paddingTop :'10px',
          paddingBottom:'40px'
 
