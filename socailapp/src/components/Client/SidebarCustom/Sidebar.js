@@ -11,7 +11,7 @@ const SideBarItems = () => {
 
   const sideItem = [
     { icon: home, name: "Home" ,Link:'/'},
-    { icon: create, name: "Create",Link:'/createPost' },
+    { icon: create, name: "Create",Link:'/createpost' },
     { icon: saved, name: "Save" },
     { 
       icon: darkMode ? lightmode :darkmode , 

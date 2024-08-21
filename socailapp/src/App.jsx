@@ -16,12 +16,12 @@ import CreatePost from './pages/Client/CreatePost/CreatePost.jsx';
 function App() {
   const {userAuthenticationSuccessful} = useSelector((state)=>state.auth)
 
-  useEffect(()=>{
+  // useEffect(()=>{
 
-  console.log(userAuthenticationSuccessful,'app')
+  // console.log(userAuthenticationSuccessful,'app')
 
 
-  })
+  // })
   const authenticated = userAuthenticationSuccessful;  
   const { mode } = useContext(ThemeSwitcherContext);
   return (

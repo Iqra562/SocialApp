@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled, Avatar, Box,List,ListItemIcon, ListItemButton, ListItemText, ListItem, Typography,useMediaQuery } from '@mui/material';
+import { styled, Avatar, Box,List,ListItemIcon, ListItemButton, ListItemText, ListItem, Typography,useMediaQuery, capitalize } from '@mui/material';
 import colors from '../../../ThemeProvider/color';
 import SideBarItems from './Sidebar';
 import { useContext } from 'react';
@@ -15,7 +15,7 @@ function SidebarCustom() {
   const { mode } = useContext(ThemeSwitcherContext);
   const { isMdScreen, isSmallScreen } = useResponsive();
   const {user} = useSelector((state)=>state.auth)
-  console.log(user)
+  // console.log(user)
   return (
     <>
       <SideBox >
@@ -64,7 +64,7 @@ function SidebarCustom() {
           <StyledListItem disablePadding>
             <StyledListItemButton>
             <ListItemIcon sx={{minWidth:isSmallScreen ? 0 : '56px'}}>
-                <StyledAvatar alt={user.name} src="/path/to/profile-image.jpg" />
+                <StyledAvatar  alt={user.name} src="/path/to/profile-image.jpg" />
               </ListItemIcon>
               {!isMdScreen && (
                 <StyledListItemText primary={user.name} />

@@ -8,15 +8,15 @@ import useResponsive from '../../../utils/useResponsive.js'
 function Home(){
   const {user,googleSignUploading,googleSignUpError,isNewUser,userAuthenticationSuccessful} = useSelector((state)=>state.auth)
   useEffect(() => {
-     console.log(user,'useEffect')
-     console.log(isNewUser,'useEffect')
-     console.log(isNewUser,'useEffect')
-     console.log(userAuthenticationSuccessful,'userAuthenticationSuccessful')
+     // console.log(user,'useEffect')
+     // console.log(isNewUser,'useEffect')
+     // console.log(isNewUser,'useEffect')
+     // console.log(userAuthenticationSuccessful,'userAuthenticationSuccessful')
    
      },[user,isNewUser,userAuthenticationSuccessful]); 
 
      useEffect(()=>{
-console.log('home page opened')
+// console.log('home page opened')
      })
      const {mode} = useContext(ThemeSwitcherContext)
      const {isSmallScreen,isMdScreen} = useResponsive();
