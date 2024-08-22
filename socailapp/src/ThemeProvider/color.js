@@ -11,7 +11,8 @@ const  colors ={
      lightPurple:"#dcd5e5",
       subtitle:"#beb9b9",
       shadow:"#0000001a",
-      searchbar:'#ebeaea'
+      searchbar:'#ebeaea',
+      formbtn:"#0f0f0f"
     },
     dark:{
       primary:"",
@@ -20,7 +21,8 @@ const  colors ={
       border:"#ffffff33",
       background:"#000000",
       shadow:"#262626",
-      searchbar:'#ffffff26'
+      searchbar:'#ffffff26',
+      formbtn:"#ffffff33"
 
     }
 }

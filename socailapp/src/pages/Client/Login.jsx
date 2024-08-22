@@ -127,7 +127,7 @@ console.log(signInWithGoogleError)
                         }
                       })}
                       onChange={handleSignInError}
-                    />
+                    /> 
                     {
                       errors.email && (
                         <span style={{ color: "red", fontSize: "12px", display: "block", marginTop: "6px" }}>

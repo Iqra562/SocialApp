@@ -34,7 +34,7 @@ function App() {
           {authenticated ? (
             <Route path="/" element={<ClientLayout />}>
               <Route index element={<Home />} />
-              <Route  path='/createPost' element={<CreatePost />} />
+              <Route  path='/createpost' element={<CreatePost />} />
               {/* <Route path="*" element={<Navigate to="/" />} /> */}
             </Route>
           ) : (

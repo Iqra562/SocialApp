@@ -8,6 +8,7 @@ import { FiSun } from "react-icons/fi";
 import { FaRegHeart } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa";
 import { FaRegBookmark } from "react-icons/fa";
+import { MdUpload } from "react-icons/md";
 
 export const icons = {
   home: GoHome,
@@ -18,7 +19,8 @@ export const icons = {
   heartOutline :FaRegHeart ,
   bookmarkOutline:FaRegBookmark,
   lightmode:FiSun,
-  logout:IoLogOutOutline
+  logout:IoLogOutOutline,
+  uploadImage :MdUpload
 
 };
   
