@@ -4,11 +4,12 @@ import colors from "../../../ThemeProvider/color";
 import ThemeSwitcherContext from "../../../context/ThemeSwitcherContext/ThemeSwitcherContext";
 import { icons } from "../../../utils/icons";
 import { useForm } from "react-hook-form";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc } from "firebase/firestore"; 
 import { useSelector } from 'react-redux';
 import {storage} from "../../../config/firebaseConfig";
 import {db} from "../../../config/firebaseConfig"; 
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
+
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
   width: "100%",
@@ -46,8 +47,7 @@ function CreatePost() {
 
   const onSubmit = async (data) => {
     console.log(data);
-    console.log(selectedImage,'slected');
-    // Handle form submission
+
   };
 
   const handleFileChange = (event) => {
