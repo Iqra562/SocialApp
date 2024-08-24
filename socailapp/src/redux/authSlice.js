@@ -19,7 +19,7 @@ const initialState = {
   signInWithGoogleError:null,
 
   
-};
+}; 
 
 
 const authSlice = createSlice({
