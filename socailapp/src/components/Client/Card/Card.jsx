@@ -60,6 +60,7 @@ const [loading, setLoading] = useState(false);
             
             if (userSnapshot.exists()) {
               const user = userSnapshot.data();
+              
               return {
                 ...post,
                 userName: user.username, 

@@ -36,11 +36,9 @@ return(
      }}>
    
           <PostCard/>
-          <PostCard/> 
-          <PostCard/>
+       
 
      </Box>
-      {/* <Sidebar/> */}
 
      </>
 
