@@ -6,13 +6,13 @@ import colors from '../../../ThemeProvider/color.js';
 import ThemeSwitcherContext from '../../../context/ThemeSwitcherContext/ThemeSwitcherContext.jsx';
 import useResponsive from '../../../utils/useResponsive.js';
 import { getAllPosts } from '../../../redux/postThunk';
-
+import CardSkeleton from '../../../components/CardSkeleton/CardSkeleton.jsx'
 function Home() {
   const { mode } = useContext(ThemeSwitcherContext);
   const { isSmallScreen, isMdScreen } = useResponsive();
   const dispatch = useDispatch();
   
-  const {posts} = useSelector((state) => state.allPosts);
+  const {posts,loading} = useSelector((state) => state.allPosts);
   const [post, setPosts] = useState([]);
 
   useEffect(() => {
@@ -37,9 +37,19 @@ function Home() {
           paddingBottom: '40px',
         }}
       >
-        {post.map((eachPost, index) => (
-          <PostCard key={index} data={eachPost} />  
-        ))}
+        {
+          loading ? (
+
+            [...Array(3)].map((_, index) => (
+              <CardSkeleton key={index} />
+            ))
+          ) :(
+            post.map((eachPost, index) => (
+              <PostCard key={index} data={eachPost} />  
+            ))
+          )
+        }
+       
       </Box>
     </Box>
   );
