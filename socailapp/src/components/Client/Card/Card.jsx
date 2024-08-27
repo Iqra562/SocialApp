@@ -24,6 +24,8 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { firestore } from '../../../config/firebaseConfig';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
  const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -37,75 +39,31 @@ import { firestore } from '../../../config/firebaseConfig';
 
 
 
-export default function PostCard() {
-  const [posts, setPosts] = useState([]);
-const [loading, setLoading] = useState(false);
-  const [expanded, setExpanded] = React.useState(false);
+export default function PostCard({data}) {
   const {mode} = useContext(ThemeSwitcherContext);
-    const {comment :Comment,heartOutline:HeartOutline,bookmarkOutline:BookMark,} = icons
-  const handleExpandClick = () => {
-    setExpanded(!expanded); 
-  };
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        //  Fetch all posts
-        const postsSnapshot = await getDocs(collection(firestore, "UserPosts"));
-  
-        const postsData = await Promise.all(
-          postsSnapshot.docs.map(async (postDoc) => {
-            const post = postDoc.data();
-            const userRef = doc(firestore, "Users", post.userId);
-            const userSnapshot = await getDoc(userRef);
-            
-            if (userSnapshot.exists()) {
-              const user = userSnapshot.data();
-              
-              return {
-                ...post,
-                userName: user.username, 
-              };
-            } else {
-              return {
-                ...post,
-                userName: "Unknown User", 
-              };
-            }
-          })
-        );
-  
-        // Update state with fetched data
-        setPosts(postsData);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching posts or users:", error);
-        setLoading(false);
-      }
-    };
-  
-    fetchPosts();
-  }, []);
-  console.log(posts,"post")
+    const {comment :Comment,heartOutline:HeartOutline,bookmarkOutline:BookMark,} = icons;
+
+ 
+  const {userName,imageUrl,title}  = data
+
+ 
   return (
 <>
-    {
-      posts.map((post,index)=>(
+ 
 <Card sx={{  marginBottom: "30px", boxShadow: 0, backgroundColor: colors[mode].background,
   borderBottom:`1px solid ${colors[mode].border}` ,borderRadius:0}}>
   <CardHeader
     avatar={
       <Avatar sx={{ bgcolor: red[500],width:'30px',height:'30px' }} aria-label="recipe">
-        {post.userName.split("")[0]}
+        {userName.split("")[0]}
       </Avatar>
     }
     sx={{ paddingX: 0, backgroundColor: colors[mode].background }}
-    title={post.userName}
+    title={userName}
   />
   <CardMedia
     component="img"
-    image={post.imageUrl
-    }
-    alt="Paella dish"
+    image={imageUrl}  alt="user"
     sx={{
       border: `1px solid ${colors[mode].border}`,
       width: '100%', 
@@ -131,13 +89,12 @@ const [loading, setLoading] = useState(false);
   </CardActions>
   <CardContent sx={{ padding: 0, backgroundColor: colors[mode].background }}>
     <Typography variant="body2" color="text.secondary">
-     {post.title}
+     {title}
     </Typography>
   </CardContent>
 </Card>
 
-      ))
-    }
+     
     </>
 
   );

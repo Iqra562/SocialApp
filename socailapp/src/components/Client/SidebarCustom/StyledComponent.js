@@ -8,6 +8,8 @@ export const StyledAvatar = styled(Avatar)(({ theme }) => ({
     height: 20,
     border: `1px solid ${colors[theme.palette.mode].background}`,
     borderRadius: '100%',
+    color:colors[theme.palette.mode].icon,
+    backgroundColor:colors[theme.palette.mode].background,
     boxShadow: `0 0 0 1px ${colors[theme.palette.mode].text}`,
   }));
 
