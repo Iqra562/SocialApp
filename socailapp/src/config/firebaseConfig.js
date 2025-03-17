@@ -4,14 +4,15 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage"; 
 const firebaseConfig = {
-  apiKey: "AIzaSyDi9XBugdmYerKJMn0VTwkNlFi-yQfPelk",
-  authDomain: "socialapp-71b7f.firebaseapp.com",
-  projectId: "socialapp-71b7f",
-  storageBucket: "socialapp-71b7f.firebasestorage.app",
-  messagingSenderId: "11888274677",
-  appId: "1:11888274677:web:1183f30bde1884fb1d69bc",
-  measurementId: "G-FTTMB96T2X"
+  apiKey: "AIzaSyCumeHemVcJwiguJ_PX0XphRKMPnQ-sTwc",
+  authDomain: "socailllapp.firebaseapp.com",
+  projectId: "socailllapp",
+  storageBucket: "socailllapp.appspot.com",
+  messagingSenderId: "136564658329",
+  appId: "1:136564658329:web:40383f207af79a2baca808",
+  measurementId: "G-VF7S9W49DB"
 };
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
